@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "02466d46-0f08-48e1-a2a2-79664047b22e": {
+      "ProjectGuid": "02466d46-0f08-48e1-a2a2-79664047b22e",
+      "DisplayName": "Client.UI",
+      "ColorIndex": 0
+    },
+    "c2b77fe7-76fc-4cfb-a2bb-77d59a911d5d": {
+      "ProjectGuid": "c2b77fe7-76fc-4cfb-a2bb-77d59a911d5d",
+      "DisplayName": "Client.UI",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}
