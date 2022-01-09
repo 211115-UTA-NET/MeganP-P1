@@ -2,6 +2,7 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Server.Api.Dtos;
 
 namespace Server.Api.Controllers {
 
@@ -10,11 +11,11 @@ namespace Server.Api.Controllers {
     public class CustomerController : ControllerBase {
         
         [HttpGet]
-        public ActionResult<Customer> GetRole([FromQuery, Required] string firstName, [FromQuery, Required] string lastName) {
+        public ActionResult<Customer> GetRole([FromQuery, Required] string FirstName, [FromQuery, Required] string LastName) {
             Console.WriteLine("I'm hereeeee");
             Customer role;
             try {
-                role = SqlLoader.LoadCustomer(firstName, lastName);
+                role = SqlLoader.LoadCustomer(FirstName, LastName);
             } catch (Exception ex) {
                 Console.WriteLine("Server Error with CustomerController");
                 return StatusCode(500);

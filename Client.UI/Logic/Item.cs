@@ -1,6 +1,7 @@
 using System;
+using Client.UI.Dtos;
 
-namespace Client.UI {
+namespace Client.UI.Logic {
 	public class Item {
 		private int productID;
 		private string name;

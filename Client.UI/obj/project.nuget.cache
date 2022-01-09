@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "8ArPC0zVu7zZOfdFYlne46Mqcwj/cnbl4Z9fuBrCn0vqI71/bgssKgfUXCW0+cHoYLIbDZ/KRwBw0ZfsoVWGPA==",
+  "dgSpecHash": "ygephEiXz2x4hmQ988JuVMBEvzfj6LpRQQj1kQkLFXUDULT5y2fpzaPsB56a2bly0fjyp2JuEXpi0jclRtG4yg==",
   "success": true,
   "projectFilePath": "C:\\Users\\hiby1\\Desktop\\Revature\\Projects\\MeganP-P1\\Client.UI\\Client.UI.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "C:\\Users\\hiby1\\.nuget\\packages\\microsoft.net.http.headers\\2.2.0\\microsoft.net.http.headers.2.2.0.nupkg.sha512",
     "C:\\Users\\hiby1\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\hiby1\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
+    "C:\\Users\\hiby1\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\hiby1\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.7.0\\runtime.native.system.data.sqlclient.sni.4.7.0.nupkg.sha512",
     "C:\\Users\\hiby1\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\hiby1\\.nuget\\packages\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",

@@ -1,9 +1,12 @@
 using System.Data.SqlClient;
+using Client.UI.Dtos;
 
-namespace Client.UI {
-    public class Customer : Person {
-		private List<Item>? shoppingCart;
-		private Store? store;
+namespace Client.UI.Logic {
+    public class CustomerLogic {
+		public List<Item>? shoppingCart { get; set; }
+		public Store? store { get; set; }
+
+		public Customer Customer { get; set; }
 
 		/*<summary> constructor
 		<params> 
@@ -15,24 +18,25 @@ namespace Client.UI {
 		decimal - initialFunds
 		<return> a new BankAccount
 		*/
-		public Customer(int ID, Store store, string firstName, string lastName, string password) : base (ID, firstName, lastName, password) {
-			this.store = store;
+		public CustomerLogic(Customer customer) {
+			this.store = customer.Store;
 			shoppingCart = new List<Item>();
-		}
+			this.Customer = customer;
+		} 
 
 		/*<summary> property returning Store
 		<return> Store
-	    */
+	    */	
 		public Store Store {
 			get { return this.store; }
-		}
+		}  
 
 		/*<summary> property returning int
 		<return> int
 	    */
 		public int GetStoreID {
 			get { return store.Id; }
-        }
+        } 
 
 		/*<summary> property returning Store
 		 * <params>
@@ -55,49 +59,49 @@ namespace Client.UI {
 					return 0;
 				}
 			}
-		}
+		} 
 
 		/*<summary> prints the cart info
 		<return> void
-	    */
+	    */ 
 		public void PrintCart() {
 			Console.WriteLine("Shopping Cart:");
 			for (int i = 0; i < shoppingCart.Count; i++) {
 				Console.WriteLine(i + ". " + shoppingCart[i].Quantity + "x " + shoppingCart[i].SalePrice + " - "+ shoppingCart[i].Name);
             }
-        }
+        }  
 
 		/*<summary> makes an order and saves the order and updates the store inventory
 		<return> bool
-	    */ /*
+	    */ 
 		public bool MakePurchase() {
-			Order order = new Order(this.store, this, this.shoppingCart);
+			Order order = new Order();
+			order.Items = this.shoppingCart;
+			order.Store = this.store;
+			order.Customer = this.Customer;
 			order.ToString();
 			Console.WriteLine("1. Confirm Order");
 			Console.WriteLine("2. Cancel Order");
 			string? answer = Console.ReadLine();
 			if (answer == "1") {
-				bool success = this.bankAccount.MakeTransaction(order);
-				if (success == true) {
-					this.store.MakePurchase(order);
-					this.SaveOrder(order);
-					this.shoppingCart.Clear();
-					return true;
-				} else {
-					return false;
-				}
+				StoreLogic storeLogic = new StoreLogic(this.store);
+				storeLogic.MakePurchase(order);
+				//this.SaveOrder(order);
+				this.shoppingCart.Clear();
+				return true;
+				
 			} else {
 				Console.WriteLine("Either you cancelled your order or you did not input a (1) to confirm order. Your shopping cart was saved, but the order was cancelled.");
 				return false;
 			}
-		} */
+		} 
 
 
 		/*<summary> saves the order to the DB
 		 * <params>
 		 * Order - the order to save to the DB
 		<return> void
-	    */
+	    */ /*
 		public void SaveOrder(Order order) {
 			string connectionString = File.ReadAllText("StringConnection.txt");
 			using SqlConnection connection = new(connectionString);
@@ -122,11 +126,11 @@ namespace Client.UI {
 				using SqlDataReader sqlReader = sqlCommand.ExecuteReader();
 				connection.Close();
 			}
-        }
+        } */
 
 		/*<summary> retrieves the customer order history
 		<return> void
-	    */
+	    */	/*
 		public void LoadOrderHistory() {
 			string connectionString = File.ReadAllText("StringConnection.txt");
 			using SqlConnection connection = new(connectionString);
@@ -144,6 +148,8 @@ namespace Client.UI {
 			}
 
 			connection.Close();
-		}
+		}  */
+
+
 	}
 }

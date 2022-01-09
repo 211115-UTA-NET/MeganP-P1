@@ -6,6 +6,8 @@ using System.Text.Json;
 using Client.UI;
 using Client.UI.Services;
 using Microsoft.AspNetCore.WebUtilities;
+using Client.UI.Dtos; 
+using Client.UI.Logic;
 
 
 Console.WriteLine("Welcome to the Magic Store!");
@@ -13,17 +15,37 @@ Console.WriteLine("Please Enter Your First Name");
 string firstName;
 string lastName;
 
-LoadService loadService = new LoadService();
-Customer? customer;
+StoreService storeService = new StoreService();
+Product product = new Product();
+product.Quantity = 100;
+product.Name = "Excaliber";
+product.Id = 11;
+product.PurchasePrice = 1000;
+product.SalePrice = 2000;
+Store store = new Store();
+store.Location = "Pheonix";
+List<Product> inventory = new List<Product>();
+inventory.Add(product);
+store.Inventory = inventory;
+Customer? customer = new Customer();
+customer.FirstName = "Meg";
+customer.LastName = "Post";
+customer.Store = store;
+customer.Id = 10;
+customer.Password = "strugglebussing";
+Item item = new Item(product, 2);
+List<Item> items = new List<Item>();
+items.Add(item);
+Order order = new Order();
+order.Store = store;
+order.Customer = customer;
+order.Items = items;
+//string output;
 try {
-    Console.WriteLine("0");
-    customer = await loadService.CustomerLoadServiceAsync("Myra", "Gold");
-    Console.WriteLine("9");
-    Console.WriteLine(customer.FirstName);
-    Console.WriteLine(customer.LastName);
-    Console.WriteLine(customer.Id);
-    Console.WriteLine(customer.Username);
-    Console.WriteLine(customer.Password);
+    bool result = await storeService.MakePurchase(order);
+ 
+    Console.WriteLine(result);
+    
 } catch (NullReferenceException) {
     Console.WriteLine("Loading Customer Broke");
 }
@@ -173,4 +195,23 @@ while (areShopping) {
 
 
 } */
+
+/*
+		public void ForgotPassword() {
+			Console.WriteLine("Please Enter Your New Password:");
+			string password = Console.ReadLine();
+			this.password = password;
+		}
+		 */
+/*<summary> method checks for correct password
+ * <params> string - password being tested
+<return> bool
+*/    /*
+  public bool ValidatePassword(string password) {
+      if (this.password == password) {
+          return true;
+      } else {
+          return false;
+      }
+  } */
 

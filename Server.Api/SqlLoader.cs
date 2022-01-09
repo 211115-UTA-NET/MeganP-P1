@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlClient;
+using Server.Api.Dtos;
 
 namespace Server.Api {
     public static class SqlLoader {
@@ -17,7 +18,12 @@ namespace Server.Api {
             using SqlDataReader reader = command.ExecuteReader();
 
             while (reader.Read()) {
-                Product product = new Product(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(4), reader.GetDecimal(2), reader.GetDecimal(3));
+                Product product = new Product();
+                product.Id = reader.GetInt32(0);
+                product.Name = reader.GetString(1);
+                product.Quantity = reader.GetInt32(4);
+                product.SalePrice = reader.GetDecimal(2);
+                product.PurchasePrice = reader.GetDecimal(3);
                 products.Add(product);
             }
 
@@ -44,10 +50,15 @@ namespace Server.Api {
                 Store store;
                 try {
                     store = LoadStore(reader.GetInt32(7));
-                } catch (System.InvalidOperationException ioe) {
+                } catch (InvalidOperationException ioe) {
                     return null;
                 }
-                Customer user = new Customer(reader.GetInt32(0), store, reader.GetString(1), reader.GetString(2), reader.GetString(4), reader.GetDecimal(6));
+                Customer user = new Customer();
+                user.Id = reader.GetInt32(0);
+                user.Store = store;
+                user.FirstName = reader.GetString(1);
+                user.LastName = reader.GetString(2);
+                user.Password = reader.GetString(4);
 
                 connection.Close();
                 return user;
@@ -74,7 +85,11 @@ namespace Server.Api {
                 using SqlDataReader reader = command.ExecuteReader();
                 reader.Read();
 
-                Owner user = new Owner(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(4), reader.GetDecimal(6));
+                Owner user = new Owner();
+                user.Id = reader.GetInt32(0);
+                user.FirstName = reader.GetString(1);
+                user.LastName = reader.GetString(2);
+                user.Password = reader.GetString(4);
                 connection.Close();
                 return user;
                 
@@ -98,7 +113,10 @@ namespace Server.Api {
             using SqlDataReader reader = command.ExecuteReader();
             reader.Read();
 
-            Store store = new Store(reader.GetInt32(0), reader.GetString(2), products);
+            Store store = new Store();
+            store.Id = reader.GetInt32(0);
+            store.Location = reader.GetString(2);
+            store.Inventory = products;
 
             connection.Close();
 

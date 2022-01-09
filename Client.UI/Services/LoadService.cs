@@ -9,6 +9,8 @@ using System.Net.Http.Json;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
+using Client.UI.Dtos;
+using Client.UI.Logic;
 
 
 namespace Client.UI.Services {
@@ -27,7 +29,7 @@ namespace Client.UI.Services {
             HttpClient httpClient = new();
             Uri server = new("https://localhost:7078");
             httpClient.BaseAddress = server;
-            Dictionary<string, string> query = new() { ["firstName"] = firstName, ["lastName"] = lastName };
+            Dictionary<string, string> query = new() { ["FirstName"] = firstName, ["LastName"] = lastName };
 
             string requestUri = QueryHelpers.AddQueryString("/api/customer", query);
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
@@ -35,24 +37,18 @@ namespace Client.UI.Services {
 
             HttpResponseMessage response;
             Customer? customer;
-            Console.WriteLine("1");
+            //string output;
             try {
-                Console.WriteLine("2");
                 response = await httpClient.SendAsync(request);
-                Console.WriteLine("3");
                 try {
-                    Console.WriteLine("4");
                     response.EnsureSuccessStatusCode();
-                    Console.WriteLine("5");
                 } catch (HttpRequestException hre) {
                     Console.WriteLine("Bad Response Code in CustomerLoadServiceAsync");
                 }
-                Console.WriteLine("6");
                 Console.WriteLine(response.StatusCode);
                 try {
-                    Console.WriteLine("7");
+                    //output = await response.Content.ReadAsStringAsync();
                     customer = await response.Content.ReadFromJsonAsync<Customer>();
-                    Console.WriteLine("8");
                     return customer;
                 } catch (InvalidOperationException ioe) {
                     Console.WriteLine("Bad Conversion from server response in LoadCustomerAsync");

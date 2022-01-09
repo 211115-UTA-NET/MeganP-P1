@@ -1,9 +1,10 @@
 using System.Data.SqlClient;
+using Server.Api.Dtos;
 
-namespace Server.Api {
-    public class Customer : Person, ISaveOrder, ILoadOrderHistory {
-		private List<Item>? shoppingCart;
-		private Store? store;
+namespace Server.Api.Logic {
+    public class CustomerLogic{
+		public List<Item>? ShoppingCart { get; set; }
+		public Store? Store { get; set; }
 
 		/*<summary> constructor
 		<params> 
@@ -15,30 +16,14 @@ namespace Server.Api {
 		decimal - initialFunds
 		<return> a new BankAccount
 		*/
-		public Customer(int ID, Store store, string firstName, string lastName, string password, decimal initialFunds) : base (ID, firstName, lastName, password, initialFunds) {
-			this.store = store;
-			shoppingCart = new List<Item>();
+		public CustomerLogic(Customer customer) {
+			this.Store = customer.Store;
+			this.ShoppingCart = new List<Item>(); 
 		}
 
-		/*<summary> property returning Store
-		<return> Store
-	    */
-		public Store Store {
-			get { return this.store; }
-		}
-
-		/*<summary> property returning int
-		<return> int
-	    */
-		public int GetStoreID {
-			get { return store.Id; }
-        }
-
-
-		
 		/*<summary> makes an order and saves the order and updates the store inventory
 		<return> bool
-	    */
+	    */ /*
 		public bool MakePurchase() {
 			Order order = new Order(this.store, this, this.shoppingCart);
 			order.ToString();
@@ -59,14 +44,14 @@ namespace Server.Api {
 				Console.WriteLine("Either you cancelled your order or you did not input a (1) to confirm order. Your shopping cart was saved, but the order was cancelled.");
 				return false;
 			}
-		}
+		}*/
 
 
 		/*<summary> saves the order to the DB
 		 * <params>
 		 * Order - the order to save to the DB
 		<return> void
-	    */
+	    */ /*
 		public void SaveOrder(Order order) {
 			string connectionString = File.ReadAllText("StringConnection.txt");
 			using SqlConnection connection = new(connectionString);
@@ -91,11 +76,11 @@ namespace Server.Api {
 				using SqlDataReader sqlReader = sqlCommand.ExecuteReader();
 				connection.Close();
 			}
-        }
+        }  */
 
 		/*<summary> retrieves the customer order history
 		<return> void
-	    */
+	    */ /*
 		public void LoadOrderHistory() {
 			string connectionString = File.ReadAllText("StringConnection.txt");
 			using SqlConnection connection = new(connectionString);
@@ -113,6 +98,6 @@ namespace Server.Api {
 			}
 
 			connection.Close();
-		}
+		} */
 	}
 }

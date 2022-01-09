@@ -1,45 +1,46 @@
 using System;
 using System.Data.SqlClient;
+using Server.Api.Dtos;
 
-namespace Server.Api {
-	public class Store : ILoadOrderHistory {
-		private string location;
-		private List<Product>? inventory;
-		private int ID;
+namespace Server.Api.Logic {
+	public class StoreLogic {
+		public string Location { get; set; }
+		public List<Product>? Inventory { get; set; }
+		public int Id { get; set; }
 
 		/*<summary> constructor
 		<return> new Store
-	    */
-		public Store (int ID, string location, List<Product> inventory) {
-			this.location = location;
-			this.inventory = inventory;
-			this.ID = ID;
+	    */	
+		public StoreLogic (Store store) {
+			this.Location = store.Location;
+			this.Inventory = store.Inventory;
+			this.Id = store.Id;
 		}
-
+		 
 		/*<summary> property returning ID
 		<return> int
-	    */
+	    *//*
 		public int Id {
 			get { return this.ID; } 
 		}
-
+		   */
 		/*<summary> property returning Name
 		<return> string
-	    */
+	    */ /*
 		public string Name {
 			get {return this.location;}
 		}
-
+		*/
 		/*<summary> property returning Inventory
 		<return> List<Product>
-	    */
+	    */ /*
 		public List<Product> Inventory {
 			get { return this.inventory; }
 		}
-
+		 */
 		/*<summary> method makes a purchase and removes purchased items from inventory
 		<return> bool
-	    */
+	    */ /*
 		public bool MakePurchase(Order order) {
 
 			string connectionString = File.ReadAllText("StringConnection.txt");
@@ -63,34 +64,34 @@ namespace Server.Api {
 			}
 			Console.WriteLine("Purchase Successful with the Store");
 			return true;
-		}
+		} */
 
 		/*<summary> prints inventory options
 		<return> void
-	    */
+	    */ /*
 		public void PrintInventory() {
 			for (int i = 0; i < inventory.Count; i++) {
 				Console.WriteLine(i + ". " + inventory[i].Quantity + "x " + inventory[i].Name);
 			}
 		}
-
+		  */
 		/*<summary> resupplies all products in inventory
 		<return> void
-	    */
+	    */ /*
 		public void ResupplyStore() {
 			//implement
-		}
+		}  */
 
 		/*<summary> Adds a product to the inventory
 		<return> void
-	    */
+	    */ /*
 		public void AddProductToInventory(Product product) {
 			this.inventory.Add(product);
-		}
+		} */
 
 		/*<summary> resupplies a product and returns the cost of the restock
 		<return> decimal
-	    */
+	    *//*
 		public decimal ResupplyProduct(string product, int quantity) {
 			decimal total = 0;
 			for (int i = 0; i < inventory.Count; i++) {
@@ -101,11 +102,11 @@ namespace Server.Api {
 				}
 			}
 			return total;
-		}
+		}*/
 
 		/*<summary> loads the store order history
 		<return> void
-	    */
+	    */ /*
 		public void LoadOrderHistory() {
 			string connectionString = File.ReadAllText("StringConnection.txt");
 			using SqlConnection connection = new(connectionString);
@@ -123,6 +124,6 @@ namespace Server.Api {
 			}
 
 			connection.Close();
-		}
+		}  */
 	}
 }

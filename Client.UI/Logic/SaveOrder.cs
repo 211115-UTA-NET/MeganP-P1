@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Server.Api.Dtos;
+using Client.UI.Dtos;
 
-namespace Server.Api {
+namespace Client.UI.Logic {
     internal interface ISaveOrder {
-        public void SaveOrder(Order order);
+        public void SaveOrder(OrderLogic order);
     }
 }

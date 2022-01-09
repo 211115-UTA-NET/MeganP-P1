@@ -1,4 +1,5 @@
 using System;
+using Server.Api.Dtos;
 
 namespace Server.Api {
 	public class Item {
