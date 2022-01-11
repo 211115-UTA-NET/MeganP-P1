@@ -11,37 +11,65 @@ using System.Text;
 using System.Text.Json;
 using Client.UI.Dtos;
 using Client.UI.Logic;
-using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Web;
 
 namespace Client.UI.Services {
-    public  class StoreService {
-    
-        public async Task<bool> MakePurchase(Order order) {
+    public class StoreService {
+
+        public async Task<int> GetStoreId() {
             HttpClient httpClient = new();
             Uri server = new("https://localhost:7078");
             httpClient.BaseAddress = server;
 
-            var step1 = JsonConvert.SerializeObject(order);
-            var step2 = JsonConvert.DeserializeObject<IDictionary<string, string>>(step1);
-            //var step3 = step2.Select(x => HttpUtility.UrlEncode(x.Key) + "=" + HttpUtility.UrlEncode(x.Value));
-            //string step4 =  string.Join("&", step3);
-            
-
-            //Dictionary<string, string> query = new() { step4 };
-
-            string requestUri = QueryHelpers.AddQueryString("/api/order", step2);
-            HttpRequestMessage request = new(HttpMethod.Post, requestUri);
+            HttpRequestMessage request = new(HttpMethod.Get, "/api/store/liststores");
             request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
 
             HttpResponseMessage response;
-            //string output;
             try {
                 response = await httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK) {
-                    return true;
+                    List<Store>? stores = await response.Content.ReadFromJsonAsync<List<Store>>();
+                    for (int i = 0; i < stores.Count; i++) {
+                        Console.WriteLine(stores[i].Id + ". " + stores[i].Location);
+                    }
+                    bool input = Int32.TryParse(Console.ReadLine(), out int storeId);
+                    if (input) {
+                        return storeId;
+                    } else {
+                        Console.WriteLine("You entered faulty input.");
+                        return 0;
+                    }
+                } else {
+                    return 0;
+                }
+            } catch (NullReferenceException nre) {
+                Console.WriteLine("Unexpected server behavior in CustomerLoadServiceAsync");
+                return 0;
+            }
+        }
+
+        public async Task<bool> SaveOrder(int storeId, int customerId, decimal total) {
+            HttpClient httpClient = new();
+            Uri server = new("https://localhost:7078");
+            httpClient.BaseAddress = server;
+
+            Dictionary<string, string> query = new() { ["storeId"] = Convert.ToString(storeId), ["customerId"] = Convert.ToString(customerId), ["total"] = Convert.ToString(total) };
+            string requestUri = QueryHelpers.AddQueryString("/api/order/order", query);
+
+            HttpRequestMessage request = new(HttpMethod.Post, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
+
+            HttpResponseMessage response;
+            try {
+                response = await httpClient.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK) {
+                    Console.WriteLine(response.Content);
+
                 } else {
                     return false;
                 }
@@ -49,11 +77,44 @@ namespace Client.UI.Services {
                 Console.WriteLine("Unexpected server behavior in CustomerLoadServiceAsync");
                 return false;
             }
+            return true;
+        }
+    
+        public async Task<bool> SaveItems(Order order, int storeId, int customerId) {
+            HttpClient httpClient = new();
+            Uri server = new("https://localhost:7078");
+            httpClient.BaseAddress = server;
+            Console.WriteLine("1");
+
+            //StringContent items = new StringContent(JsonSerializer.Serialize(order.Items), Encoding.UTF8, MediaTypeNames.Application.Json);
+            
+
+            for (int i = 0; i < order.Items.Count; i++) {
+                Dictionary<string, string> query = new() { ["storeId"] = Convert.ToString(storeId), ["customerId"] = Convert.ToString(customerId), ["total"] = Convert.ToString(order.Total), ["productId"] = Convert.ToString(order.Items[i].ProductId), ["salePrice"] = Convert.ToString(order.Items[i].SalePrice), ["purchasePrice"] = Convert.ToString(order.Items[i].PurchasePrice), ["name"] = Convert.ToString(order.Items[i].Name), ["quantity"] = Convert.ToString(order.Items[i].Quantity)};
+                string requestUri = QueryHelpers.AddQueryString("/api/order/items", query);
+
+                HttpRequestMessage request = new(HttpMethod.Post, requestUri);
+                //request.Content = new StringContent(JsonSerializer.Serialize(items), Encoding.UTF8, MediaTypeNames.Application.Json);
+                request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
+
+                HttpResponseMessage response;
+                //string output;
+                try {
+                    response = await httpClient.SendAsync(request);
+                    response.EnsureSuccessStatusCode();
+
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK) {
+                        return false;
+                        
+                    }
+                } catch (NullReferenceException nre) {
+                    Console.WriteLine("Unexpected server behavior in CustomerLoadServiceAsync");
+                    return false;
+                }
+            }
+            return true;
         }
 
-        public void LoadOrderHistory() {
-
-        }
 
     }
 }

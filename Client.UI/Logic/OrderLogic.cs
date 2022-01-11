@@ -3,36 +3,24 @@ using Client.UI.Dtos;
 
 
 namespace Client.UI.Logic {
-	public class OrderLogic {
-		public Store Store { get; set; }
-		public Customer Customer { get; set; }
-		public List<Item>? Items { get; set; }
-		public Item Item { get; set; }
-		public decimal Total { get; set; }
-		/*<summary> property returning Store
-		 * <params>
-		 * Store - the store the order took place at
-		 * Customer - the customer who made the purchase
-		 * List<Items> - the list of items being purchased
-		<return> Store
-	    */
-		public OrderLogic(Order order) {
-			this.Store = order.Store;
-			this.Customer = order.Customer;
-			this.Items = order.Items;
-			this.Total = this.TotalItUp();
-		}
-
+	public static class OrderLogic {
 		
 		/*<summary> method to calculate the total if the user is a customer
 		<return> decimal
 	    */
-		public decimal TotalItUp() {
+		public static decimal TotalItUp(Order order) {
 			decimal total = 0;
-			for (int i = 0; i < Items.Count; i++) {
-				total += (Items[i].Quantity * Items[i].SalePrice);	
+			for (int i = 0; i < order.Items.Count; i++) {
+				total += (order.Items[i].Quantity * order.Items[i].SalePrice);	
 			}
 			return total;
+		}
+
+		public static void ToString(Order order, Customer customer) {
+			Console.WriteLine("Store Location: " + customer.Store.Location + "\nTotal: " + order.Total + "\nDateTime: " + DateTime.Now);
+			for (int i = 0; i < order.Items.Count; i++) {
+				Console.WriteLine(order.Items[i].Name + " x" + order.Items[i].Quantity);
+			}
 		}
 	}
 }

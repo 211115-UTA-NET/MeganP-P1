@@ -37,22 +37,25 @@ namespace Server.Api {
         public static Customer LoadCustomer(string firstName, string lastName) {
             try {
                 string username = firstName.ToLower() + lastName.ToLower();
-
+                
                 string connectionString = File.ReadAllText("StringConnection.txt");
                 using SqlConnection connection = new(connectionString);
-
+                
                 connection.Open();
-               
+                
                 string insertOrder = $"SELECT * FROM People WHERE Username = '{username}';";
                 using SqlCommand command = new(insertOrder, connection);
                 using SqlDataReader reader = command.ExecuteReader();
+                
                 reader.Read();
                 Store store;
                 try {
-                    store = LoadStore(reader.GetInt32(7));
+                    store = LoadStore(reader.GetInt32(6));
+                    
                 } catch (InvalidOperationException ioe) {
                     return null;
                 }
+                
                 Customer user = new Customer();
                 user.Id = reader.GetInt32(0);
                 user.Store = store;
@@ -61,10 +64,12 @@ namespace Server.Api {
                 user.Password = reader.GetString(4);
 
                 connection.Close();
+
                 return user;
                 
                 
             } catch (System.Data.SqlClient.SqlException){
+                Console.WriteLine("Broken In customer loader");
                 return null;
             }
         }
@@ -151,12 +156,12 @@ namespace Server.Api {
         /*<summary> saves a new customer to the db
 		<return> void
 	    */
-        public static void SaveNewPerson(string firstName, string lastName, string password, decimal balance, int storeID) {
+        public static void SaveNewPerson(string firstName, string lastName, string password, int storeID) {
             string connectionString = File.ReadAllText("StringConnection.txt");
             using SqlConnection connection = new(connectionString);
 
             connection.Open();
-            string insertOrder = $"INSERT INTO People(FirstName, LastName, Username, Password, Role, Balance, StoreID) VALUES ('{firstName}', '{lastName}', '{firstName.ToLower() + lastName.ToLower()}', '{password}', 'Customer', {balance}, {storeID});";
+            string insertOrder = $"INSERT INTO People(FirstName, LastName, Username, Password, Role, StoreID) VALUES ('{firstName}', '{lastName}', '{firstName.ToLower() + lastName.ToLower()}', '{password}', 'Customer', {storeID});";
             using SqlCommand command = new(insertOrder, connection);
             using SqlDataReader reader = command.ExecuteReader();
 
@@ -166,8 +171,8 @@ namespace Server.Api {
         /*<summary> prints list of stores to choose which store to shop at
 		<return> int
 	    */
-        public static int GetStoreID() {
- 
+        public static List<Store> GetStoreID() {
+            List<Store> stores = new List<Store> ();
             string connectionString = File.ReadAllText("StringConnection.txt");
             using SqlConnection connection = new(connectionString);
 
@@ -176,33 +181,18 @@ namespace Server.Api {
             using SqlCommand command = new(insertOrder, connection);
             using SqlDataReader reader = command.ExecuteReader();
 
-            Console.WriteLine("Enter the Number for the Location You're Shopping at.");
-
             while (reader.Read()) {
-                Console.WriteLine(reader.GetInt32(0) + ". " + reader.GetString(2));
-                
+                Store store = new Store();
+                store.Location = reader.GetString(2);
+                store.Id = reader.GetInt32(0);
+
+                stores.Add(store);  
             }
 
             connection.Close();
 
-            return Convert.ToInt32(Console.ReadLine());
+            return stores;
         }
 
-        public static string GetRole(string user) {
-            string connectionString = File.ReadAllText("StringConnection.txt");
-            using SqlConnection connection = new(connectionString);
-
-            connection.Open();
-
-            string insertOrder = $"SELECT * FROM People WHERE Username = '{user}';";
-            using SqlCommand command = new(insertOrder, connection);
-            using SqlDataReader reader = command.ExecuteReader();
-            reader.Read();
-
-            string role = reader.GetString(5);
-
-            connection.Close();
-            return role;
-        }
     }
 }
