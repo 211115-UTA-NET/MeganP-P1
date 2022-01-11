@@ -36,8 +36,11 @@ namespace Server.Api.Controllers {
         [HttpGet("doesexist")]
         public ActionResult<bool> DoesExist([FromQuery, Required] string FirstName, [FromQuery, Required] string LastName) {
             Customer customer;
+            Console.WriteLine("1");
             try {
+                Console.WriteLine("2");
                 customer = _repository.LoadCustomer(FirstName, LastName);
+                Console.WriteLine("3");
                 if (customer != null) {
                     return true;
                 } else {
@@ -51,6 +54,7 @@ namespace Server.Api.Controllers {
 
         [HttpPost]
         public IActionResult PostNewCustomer([FromQuery, Required] string FirstName, [FromQuery, Required] string LastName, [FromQuery, Required] string password, [FromQuery, Required] int storeId) {
+            Console.WriteLine("in post");
             Store store = new Store();
             store.Id = storeId;
 
@@ -61,7 +65,9 @@ namespace Server.Api.Controllers {
             customer.Store = store;
 
             try {
+                Console.WriteLine("in post 1");
                 _repository.SaveNewPerson(FirstName, LastName, password, storeId);
+                Console.WriteLine("in post 2");
                 return StatusCode(200);
             } catch (Exception ex) {
                 Console.WriteLine("Server error in Post new Customer");

@@ -113,14 +113,14 @@ namespace Server.Api {
 		<return> void
 	    */
         public void SaveNewPerson(string firstName, string lastName, string password, int storeID) {
-            
+            Console.WriteLine("In Function");
             using SqlConnection connection = new(connectionString);
-
+            Console.WriteLine("In Function1");
             connection.Open();
             string insertOrder = $"INSERT INTO People(FirstName, LastName, Username, Password, Role, StoreID) VALUES ('{firstName}', '{lastName}', '{firstName.ToLower() + lastName.ToLower()}', '{password}', 'Customer', {storeID});";
             using SqlCommand command = new(insertOrder, connection);
             using SqlDataReader reader = command.ExecuteReader();
-
+            Console.WriteLine("Did well in database");
             connection.Close();
         }
 
@@ -227,7 +227,7 @@ namespace Server.Api {
 
             Dictionary<int, int> inventory = new Dictionary<int, int>();
             try {
-                string connectionString = File.ReadAllText("StringConnection.txt");
+                
                 using SqlConnection connection = new SqlConnection(connectionString);
                 connection.Open();
                 string getInventory = $"SELECT * FROM Inventories WHERE StoreId = {storeId}";

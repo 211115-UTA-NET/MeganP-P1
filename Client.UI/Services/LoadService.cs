@@ -18,7 +18,7 @@ namespace Client.UI.Services {
 
         public async Task<Store> StoreLoadServiceAsync(int storeId) {
             HttpClient httpClient = new();
-            Uri server = new("https://localhost:7078");
+            Uri server = new("https://meganpostlewaitprojectone.azurewebsites.net");
             httpClient.BaseAddress = server;
             Dictionary<string, string> query = new() { ["storeId"] = Convert.ToString(storeId) };
             string requestUri = QueryHelpers.AddQueryString("/api/store", query);
@@ -52,7 +52,7 @@ namespace Client.UI.Services {
 
         public async Task<List<Product>> ProductLoadServiceAsync(int storeId) {
             HttpClient httpClient = new();
-            Uri server = new("https://localhost:7078");
+            Uri server = new("https://meganpostlewaitprojectone.azurewebsites.net");
             httpClient.BaseAddress = server;
             Dictionary<string, string> query = new() { ["storeId"] = Convert.ToString(storeId) };
             string requestUri = QueryHelpers.AddQueryString("/api/product", query);
@@ -86,7 +86,7 @@ namespace Client.UI.Services {
         public async Task<Customer> CustomerLoadServiceAsync(string firstName, string lastName) {
             
             HttpClient httpClient = new();
-            Uri server = new("https://localhost:7078");
+            Uri server = new("https://meganpostlewaitprojectone.azurewebsites.net");
             httpClient.BaseAddress = server;
             Dictionary<string, string> query = new() { ["FirstName"] = firstName, ["LastName"] = lastName };
 
@@ -121,14 +121,15 @@ namespace Client.UI.Services {
 
         public async Task<bool> NewOrReturning(string firstName, string lastName) {
             HttpClient httpClient = new();
-            Uri server = new("https://localhost:7078");
+            Uri server = new("https://meganpostlewaitprojectone.azurewebsites.net");
+            Console.WriteLine("1");
             httpClient.BaseAddress = server;
             Dictionary<string, string> query = new() { ["FirstName"] = firstName, ["LastName"] = lastName };
-
+            Console.WriteLine("2");
             string requestUri = QueryHelpers.AddQueryString("/api/customer/doesexist", query);
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
             request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
-
+            Console.WriteLine("3");
             HttpResponseMessage response;
             bool doesExist;
             //string output;
@@ -156,7 +157,7 @@ namespace Client.UI.Services {
 
         public async void CustomerLoadOrdersAsync(int customerId) {
             HttpClient httpClient = new();
-            Uri server = new("https://localhost:7078");
+            Uri server = new("https://meganpostlewaitprojectone.azurewebsites.net");
             httpClient.BaseAddress = server;
             Dictionary<string, string> query = new() { ["customerId"] = Convert.ToString(customerId) };
             string requestUri = QueryHelpers.AddQueryString("/api/order/customer", query);
@@ -192,7 +193,7 @@ namespace Client.UI.Services {
         public async Task StoreLoadOrdersAsync() {
             Console.WriteLine("1");
             HttpClient httpClient = new();
-            Uri server = new("https://localhost:7078");
+            Uri server = new("https://meganpostlewaitprojectone.azurewebsites.net");
             httpClient.BaseAddress = server;
             Console.WriteLine("2");
             Dictionary<string, string> query = new() { ["Location"] = "*" };

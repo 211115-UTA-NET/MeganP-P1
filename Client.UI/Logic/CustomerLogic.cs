@@ -33,15 +33,12 @@ namespace Client.UI.Logic {
 
 		public async Task<bool> PostNewCustomer(string firstName, string lastName, string password, int storeId) {
 			HttpClient httpClient = new();
-			Uri server = new("https://localhost:7078");
+			Uri server = new("https://meganpostlewaitprojectone.azurewebsites.net");
 			httpClient.BaseAddress = server;
-
 			Dictionary<string, string> query = new() { ["FirstName"] = firstName, ["LastName"] = lastName, ["password"] = password, ["storeId"] = Convert.ToString(storeId) };
 			string requestUri = QueryHelpers.AddQueryString("/api/customer", query);
-
 			HttpRequestMessage request = new(HttpMethod.Post, requestUri);
 			request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
-
 			HttpResponseMessage response;
 			try {
 				response = await httpClient.SendAsync(request);

@@ -19,7 +19,7 @@ namespace Client.UI.Services {
 
         public async Task<int> GetStoreId() {
             HttpClient httpClient = new();
-            Uri server = new("https://localhost:7078");
+            Uri server = new("https://meganpostlewaitprojectone.azurewebsites.net");
             httpClient.BaseAddress = server;
 
             HttpRequestMessage request = new(HttpMethod.Get, "/api/store/liststores");
@@ -53,7 +53,7 @@ namespace Client.UI.Services {
 
         public async Task<bool> SaveOrder(int storeId, int customerId, decimal total) {
             HttpClient httpClient = new();
-            Uri server = new("https://localhost:7078");
+            Uri server = new("https://meganpostlewaitprojectone.azurewebsites.net");
             httpClient.BaseAddress = server;
 
             Dictionary<string, string> query = new() { ["storeId"] = Convert.ToString(storeId), ["customerId"] = Convert.ToString(customerId), ["total"] = Convert.ToString(total) };
@@ -82,7 +82,7 @@ namespace Client.UI.Services {
     
         public async Task<bool> SaveItems(Order order, int storeId, int customerId) {
             HttpClient httpClient = new();
-            Uri server = new("https://localhost:7078");
+            Uri server = new("https://meganpostlewaitprojectone.azurewebsites.net");
             httpClient.BaseAddress = server;
             Console.WriteLine("1");
 

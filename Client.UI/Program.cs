@@ -43,9 +43,13 @@ if (firstName == "megan" && lastName == "postlewait") {
     }
     await loadService.StoreLoadOrdersAsync();
     return;
-} 
-bool doesExist = await loadService.NewOrReturning(firstName, lastName);
-
+}
+bool doesExist = false;
+try {
+    doesExist = await loadService.NewOrReturning(firstName, lastName);
+} catch (HttpRequestException hre) {
+    Console.WriteLine("Server Connection Refused");
+}
 
 if (doesExist) {
     bool isValid = false;
