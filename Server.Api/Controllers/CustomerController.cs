@@ -9,13 +9,21 @@ namespace Server.Api.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class CustomerController : ControllerBase {
-        
+
+        private readonly IRepository _repository;
+        private readonly ILogger<CustomerController> _logger;
+
+        public CustomerController(IRepository repository, ILogger<CustomerController> logger) {
+            this._repository = repository;
+            this._logger = logger;
+        }
+
         [HttpGet]
         public ActionResult<Customer> GetCustomer([FromQuery, Required] string FirstName, [FromQuery, Required] string LastName) {
             
             Customer customer;
             try {
-                customer = SqlLoader.LoadCustomer(FirstName, LastName);
+                customer = _repository.LoadCustomer(FirstName, LastName);
             } catch (Exception ex) {
                 Console.WriteLine("Server Error with CustomerController");
                 return StatusCode(500);
@@ -29,7 +37,7 @@ namespace Server.Api.Controllers {
         public ActionResult<bool> DoesExist([FromQuery, Required] string FirstName, [FromQuery, Required] string LastName) {
             Customer customer;
             try {
-                customer = SqlLoader.LoadCustomer(FirstName, LastName);
+                customer = _repository.LoadCustomer(FirstName, LastName);
                 if (customer != null) {
                     return true;
                 } else {
@@ -53,7 +61,7 @@ namespace Server.Api.Controllers {
             customer.Store = store;
 
             try {
-                SqlLoader.SaveNewPerson(FirstName, LastName, password, storeId);
+                _repository.SaveNewPerson(FirstName, LastName, password, storeId);
                 return StatusCode(200);
             } catch (Exception ex) {
                 Console.WriteLine("Server error in Post new Customer");
